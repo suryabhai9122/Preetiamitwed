@@ -151,13 +151,14 @@ h2{font-family:'Gloock',serif;font-weight:400;color:#a86b70;font-size:2.6rem;lin
   </div>
 </section>
 
-<section>
+<section id="scratchSec" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center">
   <div class="eyebrow">The Date</div>
   <h2>Save the Date</h2>
   <p class="sub">Scratch below to reveal our wedding date</p>
   <div class="scratchwrap" id="scratch"></div>
 </section>
 
+<div id="after" style="display:none">
 <section>
   <div class="card">
     <p class="sub" style="margin-top:0">A lifetime of togetherness begins with one sacred step</p>
@@ -204,6 +205,8 @@ h2{font-family:'Gloock',serif;font-weight:400;color:#a86b70;font-size:2.6rem;lin
   <p id="family"></p>
   <div class="names" style="margin-top:30px"><span id="e1"></span> <span style="font-size:2rem">&amp;</span><br><span id="e2"></span></div>
 </section>
+
+</div>
 
 <script>
 /* ============ EDIT YOUR DETAILS HERE ============ */
@@ -305,10 +308,10 @@ for(let i=0;i<22;i++){const p=document.createElement('i');p.className='petal';
 const cv=$('confetti'),cx=cv.getContext('2d');let bits=[],run=false;
 const dpr=Math.min(window.devicePixelRatio||1,2);
 function size(){cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}size();addEventListener('resize',size);
-const PAL=['#7d3b3f','#c9a227','#e8b4b8','#f4a6c0','#a8e0c8','#ffffff','#ffd86b'];
+const PAL=['#7d3b3f','#c9a227','#e8b4b8','#f4a6c0','#a8e0c8','#ffffff','#ffd86b','#ff8fab','#ffb703','#e63946','#9b5de5'];
 const rnd=(a,b)=>a+Math.random()*(b-a);
 function go(){if(!run){run=true;requestAnimationFrame(loop)}}
-function piece(x,y,vx,vy,l,g){bits.push({k:'r',x,y,vx,vy,w:rnd(5,11),h:rnd(3,7),c:PAL[Math.floor(Math.random()*PAL.length)],r:rnd(0,6),vr:rnd(-.2,.2),l,g})}
+function piece(x,y,vx,vy,l,g){bits.push({k:'r',sh:Math.floor(Math.random()*5),x,y,vx,vy,w:rnd(5,11),h:rnd(3,7),c:PAL[Math.floor(Math.random()*PAL.length)],r:rnd(0,6),vr:rnd(-.2,.2),l,g})}
 function confetti(n=140,ox=innerWidth/2,oy=innerHeight*.5,spread=14,up=3,life=130){
   for(let i=0;i<n;i++)piece(ox,oy,rnd(-.5,.5)*spread,-Math.random()*spread-up,life,.28);go();
 }
@@ -328,7 +331,13 @@ function loop(){
   bits.forEach(b=>{
     b.vy+=b.g;b.x+=b.vx;b.y+=b.vy;b.l--;
     if(b.k==='s'){b.vx*=.97;b.vy*=.97;cx.globalAlpha=Math.max(0,b.l/b.m);cx.fillStyle=b.c;cx.beginPath();cx.arc(b.x,b.y,b.s,0,7);cx.fill()}
-    else{b.vx*=.995;b.r+=b.vr;cx.save();cx.globalAlpha=Math.min(1,b.l/40);cx.translate(b.x,b.y);cx.rotate(b.r);cx.fillStyle=b.c;cx.fillRect(-b.w/2,-b.h/2,b.w,b.h);cx.restore()}
+    else{b.vx*=.995;b.r+=b.vr;cx.save();cx.globalAlpha=Math.min(1,b.l/40);cx.translate(b.x,b.y);cx.rotate(b.r);cx.fillStyle=b.c;const w=b.w;
+      if(b.sh===0)cx.fillRect(-w/2,-b.h/2,w,b.h);
+      else if(b.sh===1){cx.beginPath();cx.arc(0,0,w/2,0,7);cx.fill()}
+      else if(b.sh===2){cx.beginPath();for(let k=0;k<10;k++){const r=k%2?w*.28:w*.7,a=k*Math.PI/5;cx.lineTo(Math.cos(a)*r,Math.sin(a)*r)}cx.closePath();cx.fill()}
+      else if(b.sh===3){cx.beginPath();cx.moveTo(0,w*.35);cx.bezierCurveTo(-w*.9,-w*.2,-w*.35,-w*.8,0,-w*.3);cx.bezierCurveTo(w*.35,-w*.8,w*.9,-w*.2,0,w*.35);cx.fill()}
+      else{cx.beginPath();cx.ellipse(0,0,w*.7,w*.3,0,0,7);cx.fill()}
+      cx.restore()}
   });
   cx.globalAlpha=1;
   bits.length?requestAnimationFrame(loop):(run=false,cx.clearRect(0,0,innerWidth,innerHeight));
@@ -336,14 +345,20 @@ function loop(){
 function celebrate(box){
   const r=box.getBoundingClientRect(),mx=r.left+r.width/2,my=r.top+r.height/2;
   box.classList.add('pop');
-  confetti(160,mx,my,18,4,150);
-  cannon(-1);cannon(1);
-  [250,600,950,1350,1800].forEach(t=>setTimeout(()=>firework(rnd(innerWidth*.12,innerWidth*.88),Math.max(80,rnd(my-170,my+130))),t));
-  setTimeout(()=>{cannon(-1,50);cannon(1,50)},1000);
-  setTimeout(()=>rain(90),1700);
+  confetti(260,mx,my,22,5,170);
+  cannon(-1,110);cannon(1,110);
+  [200,500,800,1100,1400,1800,2200,2600].forEach(t=>setTimeout(()=>firework(rnd(innerWidth*.1,innerWidth*.9),Math.max(80,rnd(my-200,my+140))),t));
+  [700,1300,2000,2700].forEach(t=>setTimeout(()=>{cannon(-1,70);cannon(1,70);confetti(110,innerWidth/2,innerHeight*.55,20,5,160)},t));
+  [1000,2000,3000,4000].forEach(t=>setTimeout(()=>rain(120),t));
   if(navigator.vibrate)navigator.vibrate([70,40,70,40,120]);
 }
 
+/* everything below the scratch card stays hidden until the date is revealed */
+function unlock(){
+  const a=$('after');a.style.display='block';
+  const h=document.createElement('div');h.className='scrollhint';h.textContent='SCROLL DOWN ↓';h.style.marginTop='30px';
+  $('scratchSec').appendChild(h);
+}
 /* scratch card: one card reveals the full date */
 const dateText=[String(D.getDate()).padStart(2,'0'),String(D.getMonth()+1).padStart(2,'0'),D.getFullYear()].join(' · ');
 $('scratch').innerHTML=`<div class="sc"><label>Wedding Date</label><div class="box" style="--r:-1deg"><span>${dateText}</span><canvas width="300" height="150"></canvas></div><small>↑ SCRATCH TO REVEAL</small></div>`;
@@ -356,7 +371,7 @@ $('scratch').innerHTML=`<div class="sc"><label>Wedding Date</label><div class="b
   const scratch=e=>{if(!down||done)return;const r=c.getBoundingClientRect(),px=(e.clientX-r.left)*W/r.width,py=(e.clientY-r.top)*H/r.height;
     x.globalCompositeOperation='destination-out';x.beginPath();x.arc(px,py,20,0,7);x.fill();check()};
   const check=()=>{const d=x.getImageData(0,0,W,H).data;let n=0;for(let i=3;i<d.length;i+=16)if(!d[i])n++;
-    if(n/(d.length/16)>.5){done=true;c.style.opacity=0;const sm=c.closest('.sc').querySelector('small');sm.textContent='✦ SAVE THE DATE ✦';celebrate(c.parentElement)}};
+    if(n/(d.length/16)>.5){done=true;c.style.opacity=0;const sm=c.closest('.sc').querySelector('small');sm.textContent='✦ SAVE THE DATE ✦';celebrate(c.parentElement);unlock()}};
   c.addEventListener('pointerdown',e=>{down=true;c.setPointerCapture(e.pointerId);scratch(e)});
   c.addEventListener('pointermove',scratch);
   c.addEventListener('pointerup',()=>down=false);
