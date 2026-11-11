@@ -187,12 +187,6 @@ h2{font-family:'Gloock',serif;font-weight:400;color:#a86b70;font-size:2.6rem;lin
   <div id="events"></div>
 </section>
 
-<section>
-  <div class="eyebrow">For Any Help</div>
-  <h2>Contact</h2>
-  <div class="card" id="contacts" style="margin-top:26px"></div>
-</section>
-
 <section class="rsvp">
   <div class="eyebrow">Join the Celebration</div>
   <h2>RSVP</h2>
@@ -221,15 +215,12 @@ const C={
   shloka:'॥ श्री गणेशाय नमः ॥ वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ। निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा ॥',
   blessing:'With the blessings of Shri Ganesh and our beloved families, we joyfully invite you to celebrate the union of',
   ganesh:'',                             // apni Ganesh ji ki photo/PNG dena chahein to e.g. 'ganesh.png'
-  whatsapp:'919920289305',              // <-- apna WhatsApp number (country code ke saath, bina +)
+  whatsapp:'917896954164',              // <-- apna WhatsApp number (country code ke saath, bina +)
   music:'wedding-song.m4a',              // same folder me rakhein
   photos:['p1.jpg','p2.jpg','p3.jpg','p4.jpg','p5.jpg'],
   venues:[
     {name:'Kachahariya',tag:'Lagan Chumaban · Mathmangra',addr:'Kachahariya',img:'',map:'Kachahariya Bihar'},
     {name:'Rajgir Residency',tag:'Mehendi · Sangeet · Vivaah',addr:'Rajgir, near Kund Par, Nalanda, Bihar',img:'venue.jpg',map:'Rajgir Residency Rajgir Nalanda'}
-  ],
-  contacts:[
-    {n:'Mr. Ajeet Kumar',p:'9920289305'}
   ],
   events:[
     {n:'Lagan Chumaban & Mathmangra',d:'WED · 09 DEC 2026',slots:[{t:'Rasm & Rituals',items:['Lagan Chumaban','Mathmangra']}],v:'Kachahariya',map:'Kachahariya Bihar'},
@@ -286,7 +277,6 @@ $('dateline').textContent=[String(D.getDate()).padStart(2,'0'),String(D.getMonth
 
 /* events + rsvp */
 $('venues').innerHTML=C.venues.map(v=>`<div class="card venue" style="margin:22px auto 0">${v.img?`<img src="${v.img}" alt="${v.name}">`:''}${v.tag?`<div class="eyebrow" style="margin:${v.img?'16px':'0'} 0 0">${v.tag}</div>`:''}<h3>${v.name}</h3><p>${v.addr}</p><a class="btn" target="_blank" rel="noopener" href="${map(v.map)}">View on Maps</a></div>`).join('');
-$('contacts').innerHTML=C.contacts.map(c=>`<div class="ct"><div><b>${c.n}</b><span>${c.p}</span></div><a class="btn" href="tel:+91${c.p}">Call</a></div>`).join('');
 $('events').innerHTML=C.events.map(e=>`<div class="card ev"><h3>${e.n}</h3><div class="when">${e.d}</div>
 ${e.slots.map(sl=>`<div class="tm">${sl.t}</div><ul class="items">${sl.items.map(t=>`<li>${t}</li>`).join('')}</ul>`).join('')}<hr><div style="font-size:.95rem;margin-bottom:14px">${e.v}</div>
 <a class="btn" target="_blank" rel="noopener" href="${map(e.map)}">Get Directions</a></div>`).join('');
